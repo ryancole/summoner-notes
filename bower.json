@@ -1,0 +1,20 @@
+{
+  "name": "summoner-notes",
+  "version": "0.1",
+  "authors": [
+    "Ryan Cole <ryan@rycole.com>"
+  ],
+  "description": "league of legends summoner history",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ember": "~1.4.0",
+    "underscore": "~1.6.0"
+  }
+}

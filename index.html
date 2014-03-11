@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>League of Legends Opponent History Tracker</title>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="bower_components/jquery/jquery.js"></script>
+    <script type="text/javascript" src="bower_components/handlebars/handlebars.js"></script>
+    <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
+    <script type="text/javascript" src="bower_components/ember/ember.js"></script>
+    <script type="text/javascript" src="js/utilities/league.js"></script>
+  </head>
+  <body>
+
+    <!-- application template -->
+    <script type="text/x-handlebars">
+      <div class="container">
+        {{outlet}}
+      </div>
+    </script>
+
+    <!-- summoner template -->
+    <script type="text/x-handlebars" id="summoner">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3" id="heading">
+          <h1>League of Legends Opponent History Tracker</h1>
+          <h2>for</h2>
+          <h3>{{name}}, {{region}}</h3>
+        </div>
+      </div>
+      {{outlet}}
+    </script>
+
+    <!-- summoner detail template -->
+    <script type="text/x-handlebars" id="summoner/index">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <div class="form-group">
+            {{input class="form-control input-lg" placeholder="Search for summoner name" maxlength="16" action="search" value=query}}
+          </div>
+          {{#if summonerNotFound}}
+            <div class="alert alert-danger">
+              <p>There is no summoner with that name in your region.</p>
+            </div>
+          {{/if}}
+          {{#if summonerNotPlayedWith}}
+            <div class="alert alert-danger">
+              <p>You have no recorded games with that summoner.</p>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+      {{#if summonerDetails}}
+        <div class="row">
+          <div class="col-sm-6 col-sm-offset-3">
+            <div class="alert alert-warning">
+              <p><b>You have played with {{summonerDetails.name}} a total of {{summonerDetails.timesSeen}} times. Most recently was &#8230;</b></p>
+              <hr />
+              <dl class="dl-horizontal">
+
+                <dt>Id</dt>
+                <dd><a target="_blank" {{bind-attr href=lolking}}>{{summonerDetails.mostRecentGame.id}}</a></dd>
+
+                <dt>Outcome</dt>
+                <dd>
+                  {{#if summonerDetails.mostRecentGame.victory}}
+                    <span>Won</span>
+                  {{else}}
+                    <span>Lost</span>
+                  {{/if}}
+                </dd>
+
+                <dt>Mode</dt>
+                <dd>{{summonerDetails.mostRecentGame.mode}}</dd>
+                <dt>Type</dt>
+                <dd>{{summonerDetails.mostRecentGame.type}}</dd>
+                <dt>Sub Type</dt>
+                <dd>{{summonerDetails.mostRecentGame.subtype}}</dd>
+                <dt>Team</dt>
+
+                {{#if summonerDetails.mostRecentGame.enemy}}
+                  <dd>Enemy team</dd>
+                {{else}}
+                  <dd>Friendly team</dd>
+                {{/if}}
+
+              </dl>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+    </script>
+
+    <!-- summoner configure template -->
+    <script type="text/x-handlebars" id="summoner/configure">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <div class="form-group">
+            <label class="form-label">League of Legends API Access Token</label>
+            {{input class="form-control" value=summoner.token}}
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary" {{action 'save'}}>Save</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/javascript" src="js/application.js"></script>
+    <script type="text/javascript" src="js/routes/summoner.js"></script>
+    <script type="text/javascript" src="js/controllers/summoner-index.js"></script>
+    <script type="text/javascript" src="js/controllers/summoner-configure.js"></script>
+
+  </body>
+</html>
