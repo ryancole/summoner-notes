@@ -10,12 +10,22 @@ App.SummonerIndexController = Ember.ObjectController.extend({
     summonerNotFound: false,
     summonerNotPlayedWith: false,
 
+    opponentsCount: function () {
+
+        var summoner = this.get('summoner').get('content');
+
+        return Object.keys(summoner.opponents).length;
+
+    }.property('summoner'),
+
     actions: {
 
         search: function (query) {
 
             // get the local summoner data
             var summoner = this.get('summoner').get('content');
+
+            query = query.replace(/ /g,'');
 
             // search for requested summoner name
             getSummonerByName(summoner.token, summoner.region, query).then(function (result) {

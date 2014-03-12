@@ -20,6 +20,10 @@ body {
     font-family: 'Allura', cursive;
 }
 
-#summoner-input {
-    margin-top: 60px;
+#summoner-redirect, #token-input {
+    padding-top: 60px;
+}
+
+#index-count {
+    padding-top: 60px;
 }

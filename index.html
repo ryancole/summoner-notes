@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/style.css" />
     <script type="text/javascript" src="bower_components/jquery/jquery.js"></script>
     <script type="text/javascript" src="bower_components/handlebars/handlebars.js"></script>
-    <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
     <script type="text/javascript" src="bower_components/ember/ember.js"></script>
     <script type="text/javascript" src="js/utilities/league.js"></script>
   </head>
@@ -17,6 +16,41 @@
     <script type="text/x-handlebars">
       <div class="container">
         {{outlet}}
+      </div>
+    </script>
+
+    <!-- index template -->
+    <script type="text/x-handlebars" id="index">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3" id="heading">
+          <h1>League of Legends Opponent History Tracker</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <h3>What does this do?</h3>
+          <p>Simply put, this browser application keeps track of other Summoners that you have had the pleasure of playing with ... pleasure, indeed. You may use the Summoner history to see if you've ever played with a particular person.</p>          
+          <h3>How does it work?</h3>
+          <p>All League of Legends data is provided by the official API, from Riot Games. All of your Summoner history data is stored on your own machine, using your browser's web storage feature.</p>
+          <p>You will need an API access token in order to use this application. Every Summoner already has an access token, and can retrieve it by signing into <a href="http://developer.riotgames.com/">Riot's Developer Portal</a> website.</p>
+          <h3>Get started!</h3>
+          <p>Fill out the input fields below and click the button to be taken to your page. You'll be prompted for your API access token. Javascript is required.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4 col-sm-offset-4" id="summoner-redirect">
+          <div class="form-group">
+            <label>Summoner name</label>
+            {{ input class="form-control input-lg" maxlength="16" value=summoner }}
+          </div>
+          <div class="form-group">
+            <label>Region</label>
+            {{ view Ember.Select content=regions value=region optionValuePath="content.value" optionLabelPath="content.name" class="form-control input-lg" }}
+          </div>
+          <div class="form-group">
+            {{#link-to 'summoner' region summoner class="btn btn-primary"}}Tons of Damage!{{/link-to}}
+          </div>
+        </div>
       </div>
     </script>
 
@@ -90,12 +124,23 @@
           </div>
         </div>
       {{/if}}
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3 text-center" id="index-count">
+          <p class="text-muted">Your searches will check {{opponentsCount}} unique summoners that you have played with.</p>
+        </div>
+      </div>
     </script>
 
     <!-- summoner configure template -->
     <script type="text/x-handlebars" id="summoner/configure">
       <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
+          <h3>Here's where you need that access token</h3>
+          <p>Rmember, you can locate your access token on <a href="http://developer.riotgames.com/">Riot's official Developer Portal</a> website. You already have an access token if you have a League of Legends account. Simply sign into the Developer Portal and copy and paste it into here.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3" id="token-input">
           <div class="form-group">
             <label class="form-label">League of Legends API Access Token</label>
             {{input class="form-control" value=summoner.token}}
@@ -109,6 +154,7 @@
 
     <script type="text/javascript" src="js/application.js"></script>
     <script type="text/javascript" src="js/routes/summoner.js"></script>
+    <script type="text/javascript" src="js/controllers/index.js"></script>
     <script type="text/javascript" src="js/controllers/summoner-index.js"></script>
     <script type="text/javascript" src="js/controllers/summoner-configure.js"></script>
 
