@@ -1,23 +1,24 @@
 
 App.SummonerRoute = Ember.Route.extend({
 
+    // setup the model for the route
     model: function (params) {
 
+        // initialize base model
         var summoner = {
             name: params.name,
             region: params.region
         };
 
-        // check for possible existing summoner data
+        // make sure local storage key exists before parsing
         if (typeof(localStorage.summoners) == 'string') {
 
-            // parse existing local data
             var data = JSON.parse(localStorage.summoners);
 
-            // check for data for this summoner
+            // check for existing record to use instead of empty base model
             if (data.hasOwnProperty(summoner.region) && data[summoner.region].hasOwnProperty(summoner.name)) {
 
-                // use the existing data
+                // use the existing record instead of base model
                 summoner = data[summoner.region][summoner.name];
 
             }
@@ -28,6 +29,7 @@ App.SummonerRoute = Ember.Route.extend({
 
     },
 
+    // adjust the model for the route
     afterModel: function (model, transition) {
 
         // check for an api access token
@@ -56,10 +58,13 @@ App.SummonerRoute = Ember.Route.extend({
         return getGamesBySummonerId(model.token, model.region, model.id).then(function (history) {
 
             // initialize opponents container
-            if (!model.hasOwnProperty('opponents'))
+            if (!model.hasOwnProperty('opponents')) {
+
                 model.opponents = { };
 
-            // reverse the game history
+            }
+
+            // need to loop oldest to newest
             history.games.reverse();
 
             // iterate over recent games
@@ -108,8 +113,10 @@ App.SummonerRoute = Ember.Route.extend({
 
             var local = JSON.parse(localStorage.summoners);
 
+            // update the local storage record for this summoner
             local[model.region][model.name] = model;
 
+            // save it back to local storage
             localStorage.summoners = JSON.stringify(local);
 
         }.bind(this));
