@@ -102,7 +102,8 @@ App.SummonerRoute = Ember.Route.extend({
                             type: game.gameType,
                             subtype: game.subType,
                             enemy: game.teamId != fellow.teamId,
-                            victory: game.stats.win
+                            victory: game.stats.win,
+                            created: new Date(game.createDate)
                         };
 
                     }
